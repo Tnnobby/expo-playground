@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { LayoutRectangle } from "react-native";
 
 export type ReorderableElement = {
@@ -90,7 +90,7 @@ export default function useReorderableManager(list: any[]): ReorderableManager {
     verticalOffset: number
   ) => {
     const position = movingState.current.current;
-    const { layout } = elements[position];
+    const { layout } = tempOrder.current[position];
     if (position !== 0) {
       // IF it is the top, don't check if it should go up
       if (
@@ -99,12 +99,6 @@ export default function useReorderableManager(list: any[]): ReorderableManager {
           elements[position - 1].layout.height - 10
       ) {
         _moveElement(position, position - 1);
-        console.log("should go up");
-        console.log('layout:', layout)
-        console.log('offset:', verticalOffset );
-        
-        console.log('other layout:', elements[position - 1].layout);
-        
         return;
       }
     }
@@ -115,10 +109,6 @@ export default function useReorderableManager(list: any[]): ReorderableManager {
         elements[position + 1].layout.y + 10
       ) {
         _moveElement(position, position + 1);
-        console.log("go down");
-        console.log('layout:', layout)
-        console.log('offset:', verticalOffset );
-        console.log('other layout:', elements[position + 1].layout);
         return;
       }
     }

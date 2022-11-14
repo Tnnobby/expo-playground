@@ -1,11 +1,8 @@
-import { useState, useRef, useEffect } from "react";
-import { SafeAreaView, StyleSheet, View, LayoutRectangle } from "react-native";
+import { SafeAreaView} from "react-native";
 import Animated from "react-native-reanimated";
 import { SafeAreaViewProps } from "react-native-safe-area-context";
-import useReorderableManager from "../hooks/useReorderableManager";
+import useReorderableManager from "./useReorderableManager";
 import ReorderableItem from "./reorderable-item";
-import StatefulPressable from "./stateful-pressable";
-import withReorderManager from "./with-reorder-manager";
 
 type ReordererRender<Item> = (info: {
   item: Readonly<Item>;

@@ -1,5 +1,5 @@
 import { View, StyleSheet, Text } from 'react-native'
-import Reorderable from '../../components/reorderable'
+import Reorderable from '../../components/ReorderableList'
 import { PageProps } from '../../stack.type'
 
 const ITEMS = [

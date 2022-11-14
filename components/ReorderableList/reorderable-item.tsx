@@ -9,9 +9,9 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
-import { ReorderableManager } from "../hooks/useReorderableManager";
-import { WrappedManager } from "./with-reorder-manager";
-import useWrappedManager from "../hooks/useWrappedManager";
+import { ReorderableManager } from "./useReorderableManager";
+import { WrappedManager } from "../with-reorder-manager";
+import useWrappedManager from "./useWrappedManager";
 
 export type ReorderableItemProps = {
   children?: React.ReactNode;
@@ -32,8 +32,9 @@ export default function ReorderableItem({
   const raiseStyles = useSharedValue({
     scale: 1,
     elevation: 0,
+    zIndex: 1,
   });
-  const wrappedManager = useWrappedManager(manager, id)
+  const wrappedManager = useWrappedManager(manager, id);
   const gesture = Gesture.Pan()
     .runOnJS(true)
     .activateAfterLongPress(500)
@@ -41,20 +42,27 @@ export default function ReorderableItem({
       raiseStyles.value = {
         elevation: 7,
         scale: 1.03,
+        zIndex: 10,
       };
       wrappedManager.setMoving();
     })
     .onUpdate((ev) => {
-      position.value = withSpring(ev.translationY + wrappedManager.calculateOffset(), {overshootClamping: true, mass: 0.5});
-      wrappedManager.checkOverlap(ev.translationY + wrappedManager.calculateOffset());
+      position.value = withSpring(
+        ev.translationY + wrappedManager.calculateOffset(),
+        { overshootClamping: true, mass: 0.5 }
+      );
+      wrappedManager.checkOverlap(
+        ev.translationY + wrappedManager.calculateOffset()
+      );
     })
     .onEnd((ev) => {
       raiseStyles.value = {
         elevation: 0,
         scale: 1,
+        zIndex: 1,
       };
       position.value = 0;
-      wrappedManager.setMovingEnded()
+      wrappedManager.setMovingEnded();
     });
   const moveHandle = () => {
     onMove && onMove(id);
@@ -75,14 +83,12 @@ export default function ReorderableItem({
         },
       ],
       elevation: withTiming(raiseStyles.value.elevation, { duration: 150 }),
+      zIndex: raiseStyles.value.zIndex,
     };
   });
 
-  const layoutHandle = (ev: LayoutChangeEvent) => {
-    console.log('layout updated');
-    
+  const layoutHandle = (ev: LayoutChangeEvent) =>
     wrappedManager.setLayout(ev.nativeEvent.layout);
-  };
 
   return (
     <Animated.View
@@ -98,6 +104,7 @@ export default function ReorderableItem({
 const styles = StyleSheet.create({
   container: {},
   itemContainer: {
+    zIndex: 1,
     elevation: 0,
     transform: [{ scale: 1 }],
   },
