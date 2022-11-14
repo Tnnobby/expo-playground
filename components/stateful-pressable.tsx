@@ -20,7 +20,7 @@ interface StatefulPressableProps extends PressableProps {
   animateStyles?: boolean;
   style?: StyleProps;
   activeStyle?: StyleProps;
-  trigger?: 'press' | 'longpress'
+  trigger?: "press" | "longpress";
   triggerFunction?: () => boolean;
 }
 
@@ -54,8 +54,8 @@ const getAnimatedProps: AnimatedPropExtractor = (style, animatedStyle) => {
 
 export default function StatefulPressable({
   onPress,
-  animateStyles,
-  trigger = 'press',
+  animateStyles = true,
+  trigger = "press",
   triggerFunction,
   style,
   activeStyle,
@@ -66,31 +66,35 @@ export default function StatefulPressable({
   onLongPress,
   ...props
 }: StatefulPressableProps) {
-  const animatedData = getAnimatedProps(style, activeStyle);
+  const animatedData = animateStyles
+    ? getAnimatedProps(style, activeStyle)
+    : undefined;
   const sharedValues: { [key: string]: SharedValue<any> } = {};
   for (const prop in animatedData) {
     sharedValues[prop] = useSharedValue(animatedData[prop].initial);
   }
   const [pressing, setPressing] = useState<boolean>(false);
 
-  const _animatedStyles = useAnimatedStyle(() => {
-    let _return = {};
-    for (const key in sharedValues) {
-      if (key.startsWith("transform_")) {
-        _return["transform"] = _return["transform"]
-          ? [
-              ..._return["transform"],
-              {
-                [key.split("_")[1]]: sharedValues[key].value,
-              },
-            ]
-          : [{ [key.split("_")[1]]: sharedValues[key].value }];
-      } else {
-        _return[key] = sharedValues[key].value;
-      }
-    }
-    return _return;
-  });
+  const _animatedStyles = animateStyles
+    ? useAnimatedStyle(() => {
+        let _return = {};
+        for (const key in sharedValues) {
+          if (key.startsWith("transform_")) {
+            _return["transform"] = _return["transform"]
+              ? [
+                  ..._return["transform"],
+                  {
+                    [key.split("_")[1]]: sharedValues[key].value,
+                  },
+                ]
+              : [{ [key.split("_")[1]]: sharedValues[key].value }];
+          } else {
+            _return[key] = sharedValues[key].value;
+          }
+        }
+        return _return;
+      })
+    : undefined;
 
   useEffect(() => {
     if (pressing) {
@@ -108,17 +112,17 @@ export default function StatefulPressable({
 
   const pressInHandle = (ev) => {
     onPressIn && onPressIn(ev);
-    trigger === 'press' && setPressing(true)
-  }
+    trigger === "press" && setPressing(true);
+  };
   const longPressHandle = (ev) => {
-    onLongPress && onLongPress(ev)
-    trigger === 'longpress' && setPressing(true)
-  }
+    onLongPress && onLongPress(ev);
+    trigger === "longpress" && setPressing(true);
+  };
 
   const pressOutHandle = (ev) => {
     onPressOut && onPressOut(ev);
-    setPressing(false)
-  }
+    setPressing(false);
+  };
 
   return (
     <Animated.View onLayout={onLayout} style={_animatedStyles}>
