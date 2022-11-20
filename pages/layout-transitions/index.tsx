@@ -31,9 +31,6 @@ export default function LayoutTransitionsPage() {
     _temp.splice(i - 1, 0, el);
     setItems([..._temp]);
   };
-  useEffect(() => {
-    console.log(items);
-  }, [items]);
 
   return (
     <View style={styles.container}>
