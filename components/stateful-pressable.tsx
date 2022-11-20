@@ -92,7 +92,6 @@ export default function StatefulPressable({
             _return[key] = sharedValues[key].value;
           }
         }
-        console.log(_return)
         return _return;
       })
     : undefined;

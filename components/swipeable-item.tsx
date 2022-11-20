@@ -64,8 +64,6 @@ export default function SwipeableItem({
   });
 
   useEffect(() => {
-    console.log(closed);
-    console.log(xOffset.value);
     if (closed && xOffset.value !== 0) {
       offset.value = withSpring(0, { mass: 0.5 });
       xOffset.value = 0;
