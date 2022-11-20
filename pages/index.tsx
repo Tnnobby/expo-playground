@@ -25,6 +25,14 @@ const LIST_ITEMS: HomeProjectItem[] = [
   {
     label: 'Layout Demo',
     route: 'layout-transitions'
+  },
+  {
+    label: 'Swipeable Item Demo',
+    route: 'swipe-to-edit'
+  },
+  {
+    label: 'Swipeable Reorderable List',
+    route: 'reorderable-swipeable-demo'
   }
 ];
 

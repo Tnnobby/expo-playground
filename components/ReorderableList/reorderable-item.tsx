@@ -10,7 +10,6 @@ import Animated, {
 } from "react-native-reanimated";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import { ReorderableManager } from "./useReorderableManager";
-import { WrappedManager } from "../with-reorder-manager";
 import useWrappedManager from "./useWrappedManager";
 
 export type ReorderableItemProps = {
