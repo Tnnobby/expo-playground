@@ -7,7 +7,7 @@ interface ReorderableSwipeableDemoPageProps
   extends PageProps<"reorderable-swipeable-demo"> {}
 
 
-  
+
 export default function ReorderableSwipeableDemoPage({
   navigation,
 }: ReorderableSwipeableDemoPageProps) {
@@ -15,12 +15,12 @@ export default function ReorderableSwipeableDemoPage({
 
 
   return <View style={styles.main}>
-    <Reorderable
-      data={}
+    {/* <Reorderable
+      data={items}
       renderItems={}
     >
 
-    </Reorderable>
+    </Reorderable> */}
   </View>;
 }
 
